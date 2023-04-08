@@ -33,7 +33,8 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Task Master!</h1>
+      <h1> Welcome to TaskMaster!</h1>
+
       <div className="container">
         <form onSubmit={handleSubmit}>
           <input
