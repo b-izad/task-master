@@ -1,23 +1,68 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
+import Footer from "./Footer";
 
 function App() {
+  const [inputValue, setInputValue] = useState("");
+  const [toDos, setToDos] = useState([]);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (inputValue.trim() === "") return;
+    setToDos([...toDos, { title: inputValue, completed: false }]);
+    setInputValue("");
+  };
+
+  const handleEdit = (index, newTitle) => {
+    const newToDos = [...toDos];
+    newToDos[index].title = newTitle;
+    setToDos(newToDos);
+  };
+
+  const handleDelete = (index) => {
+    const newToDos = [...toDos];
+    newToDos.splice(index, 1);
+    setToDos(newToDos);
+  };
+
+  const handleToggleComplete = (index) => {
+    const newToDos = [...toDos];
+    newToDos[index].completed = !newToDos[index].completed;
+    setToDos(newToDos);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Task Master!</h1>
+      <div className="container">
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            value={inputValue}
+            onChange={(event) => setInputValue(event.target.value)}
+            placeholder="Add new to-do item"
+          />
+          <button type="submit">Add</button>
+        </form>
+        <ul>
+          {toDos.map((toDo, index) => (
+            <li key={index} className={toDo.completed ? "completed" : ""}>
+              <input
+                type="text"
+                value={toDo.title}
+                onChange={(event) => handleEdit(index, event.target.value)}
+              />
+              <div>
+                <button onClick={() => handleToggleComplete(index)}>
+                  {toDo.completed ? "Undo" : "Complete"}
+                </button>
+                <button onClick={() => handleDelete(index)}>Delete</button>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <Footer />
     </div>
   );
 }
