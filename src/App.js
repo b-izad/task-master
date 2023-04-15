@@ -1,10 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import Footer from "./Footer";
+import { loadState, saveState } from './Storage';
 
 function App() {
   const [inputValue, setInputValue] = useState("");
-  const [toDos, setToDos] = useState([]);
+  const [toDos, setToDos] = useState(() => loadState() || []);
+
+  useEffect(() => {
+    saveState(toDos);
+  }, [toDos]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -47,8 +52,9 @@ function App() {
         </form>
         <ul>
           {toDos.map((toDo, index) => (
-            <li key={index} className={toDo.completed ? "completed" : ""}>
+            <li key={index}>
               <input
+                className={toDo.completed ? "completed" : ""}
                 type="text"
                 value={toDo.title}
                 onChange={(event) => handleEdit(index, event.target.value)}

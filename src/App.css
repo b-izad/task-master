@@ -85,11 +85,13 @@ li:hover {
   box-shadow: 0 0 0 3px rgba(30, 144, 255, 0.2);
 }
 
-li.completed {
+input.completed  {
   background-color: #F5F5F5;
   text-decoration: line-through;
   color: #CCC;
 }
+
+
 
 li input[type="text"] {
   flex: 1;
